@@ -1,0 +1,100 @@
+% Copyright (c) Killian Bouzoud.
+% Licensed under the MIT license. See LICENSE file in the project root for details.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{minifeyn}[2026/08/07 minifeyn v1.0]
+
+%%%%%%%%%%%
+% IMPORTS %
+%%%%%%%%%%%
+
+\RequirePackage{boolexpr}
+
+\RequirePackage{tikz}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{arrows.meta}
+
+%%%%%%%%%%
+% STYLES %
+%%%%%%%%%%
+
+\tikzset{%
+    mnf-fer/.style={},
+    mnf-dfer/.style={double,line width=0.75pt},
+    mnf-sca/.style={dashed},
+    mnf-chasca/.style={dashed,decoration={markings,mark=at position 0.7 with {\arrow{Triangle[angle=60:2 2]}}},postaction=decorate},
+    mnf-bos/.style={decorate,decoration={snake,segment length=4pt}},
+    mnf-dbos/.style={decorate,decoration={snake, segment length=4pt},double,line width=0.75pt},
+}
+
+%%%%%%%%%%%%%%%%
+% ENVIRONMENTS %
+%%%%%%%%%%%%%%%%
+
+\newenvironment{inlinefeyn}{%
+    \begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)},line width=1.5pt]
+}{%
+    \end{tikzpicture}
+}
+
+%%%%%%%%%%%%
+% COMMANDS %
+%%%%%%%%%%%%
+
+% Undefined image
+\newcommand{\mnfundef}{%
+    \filldraw[draw=red,fill=red!50] (0,0) rectangle (1,1);
+    \node at (0.5,0.5) {{\color{red}\bf\LARGE ?}};
+}
+
+% 1 -> 2 diagram
+\newcommand{\mnfonetotwo}[3]{%
+    \draw[#1] (0,0) -- (0.5,0);
+    \draw[#2] (0.5,0) -- (1,0.5);
+    \draw[#3] (0.5,0) -- (1,-0.5);
+}
+
+% 2 -> 2 diagram
+\newcommand{\mnftwototwo}[6][T]{%
+    \switch%
+        \case{\pdfstrcmp{#1}{T}}{%
+            \draw[#2] (0,1) -- (0.5,0.75);
+            \draw[#3] (0,0) -- (0.5,0.25);
+            \draw[#4] (0.5,0.75) -- (0.5,0.25);
+            \draw[#5] (0.5,0.75) -- (1,1);
+            \draw[#6] (0.5,0.25) -- (1,0);
+        }
+        \case{\pdfstrcmp{#1}{S}}{%
+            \draw[#2] (0,1) -- (0.25,0.5);
+            \draw[#3] (0,0) -- (0.25,0.5);
+            \draw[#4] (0.25,0.5) -- (0.75,0.5);
+            \draw[#5] (0.75,0.5) -- (1,1);
+            \draw[#6] (0.75,0.5) -- (1,0);
+        }
+        \case{\pdfstrcmp{#1}{X}}{%
+            \draw[#2] (0,1) -- (0.5,0.5);
+            \draw[#3] (0,0) -- (0.5,0.5);
+            \draw[#5] (0.5,0.5) -- (1,1);
+            \draw[#6] (0.5,0.5) -- (1,0);
+        }
+        \otherwise%
+            \mnfundef
+    \endswitch%
+}
+
+% One-loop diagram
+\newcommand{\mnfoneloop}[3][B]{%
+    \switch%
+        \case{\pdfstrcmp{#1}{B}}{%
+            \draw[#2] (0.0,0.0) -- (0.5,0.0);
+            \draw[#3] (1,0) circle(0.5);
+            \draw[#2] (1.5,0.0) -- (2.0,0.0);
+        }
+        \case{\pdfstrcmp{#1}{T}}{%
+            \draw[#2] (0.0,0.0) -- (2.0,0.0);
+            \draw[#3] (1,0.5) circle(0.5);
+        }
+        \otherwise%
+            \mnfundef%
+    \endswitch%
+}

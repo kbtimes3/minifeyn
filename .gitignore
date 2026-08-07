@@ -1,0 +1,11 @@
+# Ignore files generated during LaTeX compilation
+_minted-manual/
+*.aux
+*.log
+*.out
+*.toc
+*.pdf
+
+# Ignore dev files
+devel.tex
+*.txt

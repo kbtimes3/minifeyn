@@ -1,0 +1,198 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{hyperref}
+\usepackage{minted}
+\usepackage[svgnames]{xcolor}
+\usepackage{amsmath,amsfonts,amssymb}
+
+\usepackage{minifeyn}
+
+\newcommand{\testprop}[1]{%
+    \begin{inlinefeyn}
+        \draw[#1] (0,0) -- (0.5,0);
+    \end{inlinefeyn}
+}
+
+\author{Killian Bouzoud}
+\title{The \texttt{minifeyn} package}
+\date{\texttt{v1.0}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    \texttt{minifeyn} is a package to draw Feynman diagrams in equations.
+    It uses \texttt{TikZ} and allows for customizing the diagrams and working with delimiters.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+
+\section{``Install'' the package}
+
+Simply put the \texttt{minifeyn.sty} file in the same directory as your document and load it using:
+\begin{minted}[bgcolor=Beige]{latex}
+    \usepackage{minifeyn}
+\end{minted}
+That's pretty much it.
+
+\subsection{Requirements}
+
+\texttt{minifeyn} uses the following \LaTeX~packages:
+\begin{itemize}
+    \item \texttt{boolexpr}
+    \item \texttt{TikZ} and the following libraries:
+    \begin{itemize}
+        \item \texttt{decorations.pathmorphing}
+        \item \texttt{decorations.markings}
+        \item \texttt{arrows.meta}
+    \end{itemize}
+\end{itemize}
+
+\section{Using the package}
+
+\subsection{Available particle styles}
+\label{sec:particlestyles}
+
+The following particles can be used in diagrams:
+\begin{alignat}{3}
+    \testprop{mnf-sca}\qquad    && &\texttt{mnf-sca}\qquad    && \text{Scalar}\nonumber                                   \\
+    \testprop{mnf-chasca}\qquad && &\texttt{mnf-chasca}\qquad && \text{Charged scalar}\nonumber                           \\
+    \testprop{mnf-fer}\qquad    && &\texttt{mnf-fer}\qquad    && \text{Fermion}\nonumber                                  \\
+    \testprop{mnf-dfer}\qquad   && &\texttt{mnf-dfer}\qquad   && \text{Double fermion (spin-$3/2$ field, \dots)}\nonumber \\
+    \testprop{mnf-bos}\qquad    && &\texttt{mnf-bos}\qquad    && \text{Boson}\nonumber                                    \\
+    \testprop{mnf-dbos}\qquad   && &\texttt{mnf-dbos}\qquad   && \text{Double boson (spin-$2$ field, \dots)}
+\end{alignat}
+
+\subsection{Available diagrams}
+\label{sec:diagrams}
+
+\subsubsection{One-loop diagrams}
+
+\begin{minted}[bgcolor=Beige]{latex}
+    \mnfoneloop[diag]{s1}{s2}
+\end{minted}
+There are two topologies:
+\begin{alignat}{2}
+    &\begin{inlinefeyn}
+        \mnfoneloop[B]{mnf-fer}{mnf-fer}
+    \end{inlinefeyn}\qquad
+    &&
+    \begin{inlinefeyn}
+        \mnfoneloop[T]{mnf-fer}{mnf-fer}
+    \end{inlinefeyn}\nonumber \\
+    &\texttt{B}\qquad && \texttt{T}
+\end{alignat}
+The topology can be selected by the (optional) argument \texttt{diag}, which can either be \texttt{B} (bubble, \textbf{default}) or \texttt{T} (tadpole).
+The \texttt{s1} and \texttt{s2} arguments are the particle styles of the external line and loop, respectively.
+They can be any of the styles in Section~\ref{sec:particlestyles}.
+
+\subsubsection{$1\leftrightarrow 2$ diagram}
+
+\begin{minted}[bgcolor=Beige]{latex}
+    \mnfonetotwo{s1}{s2}{s3}
+\end{minted}
+There is only one topology:
+\begin{equation}
+    \begin{inlinefeyn}
+        \mnfonetotwo{mnf-fer}{mnf-fer}{mnf-fer}
+    \end{inlinefeyn}
+\end{equation}
+The \texttt{s1}, \texttt{s2} and \texttt{s3} arguments are the styles of each particle, ordered from left to right and top to bottom.
+
+\subsubsection{$2\leftrightarrow 2$ diagrams}
+
+\begin{minted}[bgcolor=Beige]{latex}
+    \mnftwototwo[diag]{s1}{s2}{s3}{s4}{s5}
+\end{minted}
+There are three topologies:
+\begin{alignat}{3}
+    &\begin{inlinefeyn}
+        \mnftwototwo[S]{mnf-fer}{mnf-fer}{mnf-fer}{mnf-fer}{mnf-fer}
+    \end{inlinefeyn}\qquad
+    &&
+    \begin{inlinefeyn}
+        \mnftwototwo[T]{mnf-fer}{mnf-fer}{mnf-fer}{mnf-fer}{mnf-fer}
+    \end{inlinefeyn}\qquad
+    &&
+    \begin{inlinefeyn}
+        \mnftwototwo[X]{mnf-fer}{mnf-fer}{}{mnf-fer}{mnf-fer}
+    \end{inlinefeyn}\nonumber \\
+    &\texttt{S}\qquad && \texttt{T}\qquad && \texttt{X}
+\end{alignat}
+The topology can be selected by the (optional) argument \texttt{diag},
+which can either be \texttt{S} ($s$ channel), \texttt{T} ($t$ channel, \textbf{default}) or \texttt{X} (four-point interaction).
+The \texttt{s1}, \texttt{s2}, \texttt{s4} and \texttt{s5} arguments are the styles of each particle, ordered from left to right and top to bottom.
+The \texttt{s3} argument is the style of the intermediate particle, which does nothing for \texttt{X}.
+
+For any of the functions that have a \texttt{diag} optional argument, if the value is not recognized the following will be outputted instead:
+\begin{equation}
+    \begin{inlinefeyn}
+        \mnfoneloop[E]{}{}
+    \end{inlinefeyn}
+\end{equation}
+
+\subsection{Writing equations}
+
+The functions from Section~\ref{sec:diagrams} should be used wrapped in a \texttt{inlinefeyn} environment.
+For example, the following code:
+\inputminted[bgcolor=Beige]{latex}{include/equation1.tex}
+produces the following output
+\input{include/equation1.tex}
+The \texttt{minifeyn} functions are meant be used in equations.
+For example, we can write the diagrams for Bhabha scattering as
+\inputminted[bgcolor=Beige]{latex}{include/equation2.tex}
+which gives us
+\input{include/equation2.tex}
+Delimiters scale properly with the Section~\ref{sec:diagrams} functions.
+For example, we can write the \textit{square} of the previous expression
+\input{include/equation3.tex}
+as
+\inputminted[bgcolor=Beige]{latex}{include/equation3.tex}
+Note that the \texttt{inlinefeyn} environment is actually just a \texttt{tikzpicture}
+(which also adjusts the vertical alignment and sets the width of the lines in the figure),
+meaning it is possible to complement the diagrams with other \texttt{TikZ} instructions.
+For example, we could start from the ``bubble'' diagram and add a line to get the following two-loop diagram for the $\phi^4$ model
+\input{include/equation4.tex}
+by writing
+\inputminted[bgcolor=Beige]{latex}{include/equation4.tex}
+The coordinates are chosen such that:
+\begin{itemize}
+    \item All diagrams are $1$ unit high,
+    \item The $y$ range is $[0,1]$ for \texttt{mnftwototwo} and \texttt{mnfoneloop[T]} and $[-0.5,0.5]$ for all other diagrams,
+    \item The $x$ range is $[0,2]$ for loop diagrams and $[0,1]$ everywhere else,
+    \item The $(0,0)$ point is the leftmost point, for $2\leftrightarrow 2$ diagrams it is at the bottom of the diagram.
+\end{itemize}
+You can see the source code for more information.
+
+\section{Examples}
+
+Some more examples are listed below.
+
+\subsection{Axion production rate}
+
+\input{include/equation5.tex}
+\inputminted[bgcolor=Beige]{latex}{include/equation5.tex}
+
+\subsection{Cutting rules}
+
+\input{include/equation6.tex}
+\inputminted[bgcolor=Beige]{latex}{include/equation6.tex}
+
+\section{Known issues}
+
+\subsection{Interaction with unknown package}
+
+When writing my PhD thesis and using a preliminary version of this package,
+I ended up running into a bug where I couldn't place two diagrams on the same line unless I wrapped one of the \texttt{inlinefeyn} environments
+in a \mintinline{latex}{\raisebox{0ex}{...}}.
+I have no clue what caused this and I did not run into this bug again while developping the package in this repo.
+My thesis uses many more \LaTeX~packages than this manual though, so the issue is probably caused by that?
+Again, I do not know the cause or if you might even encounter that bug but I think it's useful to have that information.
+
+\end{document}

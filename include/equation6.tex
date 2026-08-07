@@ -1,0 +1,12 @@
+\begin{equation}
+    \begin{inlinefeyn}
+        \mnfoneloop{mnf-bos}{mnf-fer}
+        \draw[mnf-bos] (0.646447,-0.353553) -- (1.35355,0.353553);
+        \draw[mnf-fer,red] (0.8,-0.6) -- (1.0,-0.6) -- (1.0,0.6) -- (1.2,0.6);
+    \end{inlinefeyn}\to\begin{inlinefeyn}
+        \mnfonetotwo{mnf-bos}{mnf-fer}{mnf-fer}
+        \draw[mnf-bos] (0.75,-0.25) -- (1.0,0.0);
+    \end{inlinefeyn}+\begin{inlinefeyn}
+        \mnftwototwo[S]{mnf-fer}{mnf-bos}{mnf-fer}{mnf-bos}{mnf-fer}
+    \end{inlinefeyn}+\cdots
+\end{equation}
