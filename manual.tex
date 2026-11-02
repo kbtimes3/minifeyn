@@ -18,7 +18,7 @@
 
 \author{Killian Bouzoud}
 \title{The \texttt{minifeyn} package}
-\date{\texttt{v1.0}}
+\date{\texttt{v1.1.0}}
 
 \begin{document}
 
@@ -61,12 +61,13 @@ That's pretty much it.
 
 The following particles can be used in diagrams:
 \begin{alignat}{3}
-    \testprop{mnf-sca}\qquad    && &\texttt{mnf-sca}\qquad    && \text{Scalar}\nonumber                                   \\
-    \testprop{mnf-chasca}\qquad && &\texttt{mnf-chasca}\qquad && \text{Charged scalar}\nonumber                           \\
-    \testprop{mnf-fer}\qquad    && &\texttt{mnf-fer}\qquad    && \text{Fermion}\nonumber                                  \\
-    \testprop{mnf-dfer}\qquad   && &\texttt{mnf-dfer}\qquad   && \text{Double fermion (spin-$3/2$ field, \dots)}\nonumber \\
-    \testprop{mnf-bos}\qquad    && &\texttt{mnf-bos}\qquad    && \text{Boson}\nonumber                                    \\
-    \testprop{mnf-dbos}\qquad   && &\texttt{mnf-dbos}\qquad   && \text{Double boson (spin-$2$ field, \dots)}
+    \testprop{mnf-sca}\qquad     && &\texttt{mnf-sca}\qquad     && \text{Scalar}\nonumber                                   \\
+    \testprop{mnf-chasca}\qquad  && &\texttt{mnf-chasca}\qquad  && \text{Charged scalar}\nonumber                           \\
+    \testprop{mnf-fer}\qquad     && &\texttt{mnf-fer}\qquad     && \text{Fermion}\nonumber                                  \\
+    \testprop{mnf-dfer}\qquad    && &\texttt{mnf-dfer}\qquad    && \text{Double fermion (spin-$3/2$ field, \dots)}\nonumber \\
+    \testprop{mnf-bos}\qquad     && &\texttt{mnf-bos}\qquad     && \text{Boson}\nonumber                                    \\
+    \testprop{mnf-dbos}\qquad    && &\texttt{mnf-dbos}\qquad    && \text{Double boson (spin-$2$ field, \dots)}\nonumber     \\
+    \testprop{mnf-gaugino}\qquad && &\texttt{mnf-gaugino}\qquad && \text{Gaugino}
 \end{alignat}
 
 \subsection{Available diagrams}
@@ -127,7 +128,7 @@ There are three topologies:
 \end{alignat}
 The topology can be selected by the (optional) argument \texttt{diag},
 which can either be \texttt{S} ($s$ channel), \texttt{T} ($t$ channel, \textbf{default}) or \texttt{X} (four-point interaction).
-The \texttt{s1}, \texttt{s2}, \texttt{s4} and \texttt{s5} arguments are the styles of each particle, ordered from left to right and top to bottom.
+The \texttt{s1}, \texttt{s2}, \texttt{s4} and \texttt{s5} arguments are the styles of each particle, ordered from top to bottom and left to right.
 The \texttt{s3} argument is the style of the intermediate particle, which does nothing for \texttt{X}.
 
 For any of the functions that have a \texttt{diag} optional argument, if the value is not recognized the following will be outputted instead:
@@ -194,5 +195,13 @@ in a \mintinline{latex}{\raisebox{0ex}{...}}.
 I have no clue what caused this and I did not run into this bug again while developping the package in this repo.
 My thesis uses many more \LaTeX~packages than this manual though, so the issue is probably caused by that?
 Again, I do not know the cause or if you might even encounter that bug but I think it's useful to have that information.
+
+\subsection{Interaction with \texttt{annotate-equations}}
+
+When using the \texttt{annotate-equations} package in conjunction with \texttt{minifeyn},
+the \mintinline{latex}{\eqnmarkbox} command can be used to put a colored box around a \mintinline{latex}{\inlinefeyn} environment
+(like with delimiters, the size is adjusted to the diagram).
+\textbf{However} when trying to place an annotation arrow with \mintinline{latex}{\annotate}, the arrow will not be drawn.
+I do not know what causes this either.
 
 \end{document}

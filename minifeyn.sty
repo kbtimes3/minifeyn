@@ -1,7 +1,7 @@
 % Copyright (c) Killian Bouzoud.
 % Licensed under the MIT license. See LICENSE file in the project root for details.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{minifeyn}[2026/08/07 minifeyn v1.0]
+\ProvidesPackage{minifeyn}[2026/08/07 minifeyn v1.1.0]
 
 %%%%%%%%%%%
 % IMPORTS %
@@ -25,6 +25,16 @@
     mnf-chasca/.style={dashed,decoration={markings,mark=at position 0.7 with {\arrow{Triangle[angle=60:2 2]}}},postaction=decorate},
     mnf-bos/.style={decorate,decoration={snake,segment length=4pt}},
     mnf-dbos/.style={decorate,decoration={snake, segment length=4pt},double,line width=0.75pt},
+    mnf-gaugino/.style={
+        draw=black,
+        line width=0.75pt,
+        postaction={
+            draw=black,
+            line width=0.75pt,
+            decorate,
+            decoration={snake,segment length=4pt}
+        }
+    },
 }
 
 %%%%%%%%%%%%%%%%
